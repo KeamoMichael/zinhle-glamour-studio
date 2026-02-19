@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+
+  /* Brand Palette */
+  --color-raspberry: #c72169;
+  --color-black: #000000;
+  --color-white: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-sora: var(--font-sora);
+  --font-galafera: var(--font-galafera);
+
+  --color-raspberry: var(--color-raspberry);
+  --color-black: var(--color-black);
+  --color-white: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sora), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Utilities */
+.text-raspberry {
+  color: var(--color-raspberry);
+}
+
+.bg-raspberry {
+  background-color: var(--color-raspberry);
+}
+
+.border-raspberry {
+  border-color: var(--color-raspberry);
+}
+
+.font-gilda {
+  font-family: var(--font-galafera), serif;
+}
+
+.font-sora {
+  font-family: var(--font-sora), sans-serif;
+}
+
+.font-italiana {
+  font-family: var(--font-galafera), serif;
+}
+
+.font-galafera {
+  font-family: var(--font-galafera), serif;
+}
+
+/* Navbar link hover animation */
+@keyframes underline-grow {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
