@@ -23,7 +23,7 @@ const Navbar = () => {
         { name: "Cornrows", href: "/services#Cornrows" }
       ]
     },
-    { name: "About Us", href: "#about" },
+    { name: "About Us", href: "/about" },
   ];
 
   return (
@@ -36,7 +36,7 @@ const Navbar = () => {
               {["Home", "Services", "About"].map((link) => (
                 <div key={link} className="relative h-full flex items-center group">
                   <Link
-                    href={link === "Home" ? "/" : link === "Services" ? "/services" : "#about"}
+                    href={link === "Home" ? "/" : link === "Services" ? "/services" : "/about"}
                     className="text-sm text-gray-800 font-medium font-sora tracking-wide relative z-10"
                   >
                     {link}
@@ -197,7 +197,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   Book An Appointment
-                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" />
                 </Link>
               </motion.div>
             </div>

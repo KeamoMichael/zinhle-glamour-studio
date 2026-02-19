@@ -42,7 +42,7 @@ const ServiceHero = () => {
                         className="inline-flex items-center gap-2 px-6 py-3 bg-transparent text-white border border-white text-xs sm:text-sm font-medium font-sora tracking-wider transition-all duration-300 hover:bg-white hover:text-black group"
                     >
                         Book An Appointment
-                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-black">→</span>
                     </Link>
                 </motion.div>
             </div>

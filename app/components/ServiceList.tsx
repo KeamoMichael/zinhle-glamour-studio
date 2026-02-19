@@ -69,7 +69,7 @@ const ServiceList = () => {
                                                     onClick={() => handleBook(category.title, item.name)}
                                                     className="text-xs font-sora font-semibold text-gray-400 uppercase tracking-wider group-hover:text-raspberry transition-colors flex items-center gap-2 w-full text-left outline-none focus:text-raspberry"
                                                 >
-                                                    Book This Style <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform">→</span>
+                                                    Book This Style <span className="transform translate-x-0 group-hover:translate-x-1 group-hover:text-raspberry transition-transform">→</span>
                                                 </button>
                                             </div>
                                         </div>
