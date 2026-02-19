@@ -42,8 +42,8 @@ const Booking = () => {
               href="/services#book-service"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent text-raspberry border border-raspberry text-xs font-medium font-sora tracking-wider transition-all duration-300 hover:bg-raspberry hover:text-white group"
             >
-              <span className="transition-colors duration-300">Book A Consultation</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="transition-colors duration-300 group-hover:text-white">Book A Consultation</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white">→</span>
             </Link>
           </motion.div>
         </div>
