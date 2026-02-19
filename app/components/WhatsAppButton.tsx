@@ -197,7 +197,7 @@ const WhatsAppButton = () => {
                     pointerEvents: isVisible ? "auto" : "none"
                 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => setIsVisible(true) && setIsOpen(!isOpen)} // Ensure visible when clicked, toggle menu
+                onClick={() => { setIsVisible(true); setIsOpen(!isOpen); }} // Ensure visible when clicked, toggle menu
                 onTap={() => setIsOpen(!isOpen)}
                 className="flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg hover:bg-[#128C7E] transition-colors duration-300 hover:scale-110 relative"
                 aria-label="Toggle chat menu"
