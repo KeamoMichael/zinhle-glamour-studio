@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, Heart, Award } from "lucide-react";
@@ -44,20 +44,14 @@ const AboutContent = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
                         {/* Image */}
                         <motion.div
-                            className="relative h-[400px] md:h-[550px] overflow-hidden"
+                            className="relative h-[400px] md:h-[550px] overflow-hidden bg-raspberry"
                             initial={{ opacity: 0, x: -40 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.9, ease: "easeOut" }}
                         >
-                            <Image
-                                src="/assets/Zee - Page 1.jpg"
-                                alt="Zinhle at work"
-                                fill
-                                className="object-cover object-center"
-                            />
                             {/* Decorative accent */}
-                            <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry" />
+                            <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry/60" />
                         </motion.div>
 
                         {/* Text */}
@@ -194,19 +188,13 @@ const AboutContent = () => {
 
                         {/* Image */}
                         <motion.div
-                            className="relative h-[400px] md:h-[550px] overflow-hidden order-1 md:order-2"
+                            className="relative h-[400px] md:h-[550px] overflow-hidden order-1 md:order-2 bg-raspberry"
                             initial={{ opacity: 0, x: 40 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.9, ease: "easeOut" }}
                         >
-                            <Image
-                                src="/assets/Zee - Page 2.jpg"
-                                alt="Inside Zinhle Glamour Studio"
-                                fill
-                                className="object-cover object-center"
-                            />
-                            <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry" />
+                            <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry/60" />
                         </motion.div>
                     </div>
                 </div>

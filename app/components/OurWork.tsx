@@ -27,6 +27,7 @@ const OurWork = () => {
 
     return (
         <section className="py-20 md:py-28 bg-white overflow-hidden">
+            {/* Heading */}
             <div className="max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 mb-14 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -43,10 +44,53 @@ const OurWork = () => {
                 </motion.div>
             </div>
 
-            <div className="relative w-full">
+            {/* ─── MOBILE LAYOUT ─── */}
+            <div className="md:hidden">
+                {/* Arrow + Image row */}
+                <div className="flex items-center justify-center gap-4 px-4">
+                    <button
+                        onClick={() => paginate(-1)}
+                        className="flex-shrink-0 p-2 text-raspberry/70 hover:text-raspberry transition-colors outline-none"
+                        aria-label="Previous image"
+                    >
+                        <ChevronLeft size={36} strokeWidth={1.5} />
+                    </button>
+
+                    <div className="relative w-full max-w-[320px] aspect-square shadow-xl overflow-hidden">
+                        <AnimatePresence initial={false}>
+                            <motion.div
+                                key={currentIndex}
+                                initial={{ opacity: 0, x: 60 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -60 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                className="absolute inset-0"
+                            >
+                                <Image
+                                    src={images[currentIndex]}
+                                    alt={`Our Work ${currentIndex + 1}`}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    <button
+                        onClick={() => paginate(1)}
+                        className="flex-shrink-0 p-2 text-raspberry/70 hover:text-raspberry transition-colors outline-none"
+                        aria-label="Next image"
+                    >
+                        <ChevronRight size={36} strokeWidth={1.5} />
+                    </button>
+                </div>
+            </div>
+
+            {/* ─── DESKTOP LAYOUT ─── */}
+            <div className="hidden md:block relative w-full">
                 {/* Carousel Container */}
-                <div className="relative h-[350px] md:h-[500px] flex items-center justify-center overflow-hidden">
-                    {/* Slider Track */}
+                <div className="relative h-[500px] flex items-center justify-center overflow-hidden">
                     <div className="relative w-full h-full flex items-center justify-center">
                         <AnimatePresence initial={false}>
                             {/* Previous Image Preview */}
@@ -55,7 +99,7 @@ const OurWork = () => {
                                 initial={{ opacity: 0, x: -550 }}
                                 animate={{ opacity: 0.3, x: -550 }}
                                 exit={{ opacity: 0, x: -700 }}
-                                className="absolute w-[300px] md:w-[500px] aspect-square hidden md:block"
+                                className="absolute w-[500px] aspect-square"
                             >
                                 <Image
                                     src={images[(currentIndex - 1 + images.length) % images.length]}
@@ -72,7 +116,7 @@ const OurWork = () => {
                                 animate={{ opacity: 1, scale: 1, x: 0 }}
                                 exit={{ opacity: 0, scale: 0.9, x: -100 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                className="absolute w-[320px] md:w-[500px] aspect-square z-10 shadow-2xl"
+                                className="absolute w-[500px] aspect-square z-10 shadow-2xl"
                             >
                                 <Image
                                     src={images[currentIndex]}
@@ -89,7 +133,7 @@ const OurWork = () => {
                                 initial={{ opacity: 0, x: 550 }}
                                 animate={{ opacity: 0.3, x: 550 }}
                                 exit={{ opacity: 0, x: 700 }}
-                                className="absolute w-[300px] md:w-[500px] aspect-square hidden md:block"
+                                className="absolute w-[500px] aspect-square"
                             >
                                 <Image
                                     src={images[(currentIndex + 1) % images.length]}
@@ -101,38 +145,39 @@ const OurWork = () => {
                         </AnimatePresence>
                     </div>
 
-                    {/* Side Fades - More aggressive to totally fade from sides */}
-                    <div className="absolute inset-y-0 left-0 w-[25%] md:w-[40%] bg-gradient-to-r from-white via-white to-transparent z-20 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-[25%] md:w-[40%] bg-gradient-to-l from-white via-white to-transparent z-20 pointer-events-none" />
+                    {/* Desktop Side Fades */}
+                    <div className="absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-white via-white to-transparent z-20 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-[40%] bg-gradient-to-l from-white via-white to-transparent z-20 pointer-events-none" />
+                </div>
+
+                {/* Desktop Navigation Arrows — positioned beside the image */}
+                <div className="max-w-6xl mx-auto relative px-8">
+                    <button
+                        className="absolute -top-[280px] left-4 p-3 text-raspberry/80 hover:text-raspberry transition-colors z-30 outline-none"
+                        onClick={() => paginate(-1)}
+                        aria-label="Previous image"
+                    >
+                        <ChevronLeft size={48} strokeWidth={1} />
+                    </button>
+                    <button
+                        className="absolute -top-[280px] right-4 p-3 text-raspberry/80 hover:text-raspberry transition-colors z-30 outline-none"
+                        onClick={() => paginate(1)}
+                        aria-label="Next image"
+                    >
+                        <ChevronRight size={48} strokeWidth={1} />
+                    </button>
                 </div>
             </div>
 
-            {/* Navigation Arrows (Stay visible over fades) */}
-            {/* Desktop Navigation Arrows */}
-            <div className="max-w-6xl mx-auto relative px-8">
-                <button
-                    className="absolute -top-[250px] md:-top-[280px] left-4 md:left-10 p-3 text-raspberry/80 hover:text-raspberry transition-colors z-30 outline-none"
-                    onClick={() => paginate(-1)}
-                >
-                    <ChevronLeft size={48} strokeWidth={1} />
-                </button>
-                <button
-                    className="absolute -top-[250px] md:-top-[280px] right-4 md:right-10 p-3 text-raspberry/80 hover:text-raspberry transition-colors z-30 outline-none"
-                    onClick={() => paginate(1)}
-                >
-                    <ChevronRight size={48} strokeWidth={1} />
-                </button>
-            </div>
-
             {/* Pagination Dots */}
-            <div className="flex justify-center gap-3 mt-12 bg-white relative z-30">
+            <div className="flex justify-center gap-3 mt-10 md:mt-12 bg-white relative z-30">
                 {images.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
                         className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${currentIndex === index
-                            ? "bg-raspberry scale-125 shadow-sm"
-                            : "bg-gray-200 hover:bg-gray-300"
+                                ? "bg-raspberry scale-125 shadow-sm"
+                                : "bg-gray-200 hover:bg-gray-300"
                             }`}
                         aria-label={`Go to image ${index + 1}`}
                     />
@@ -143,6 +188,3 @@ const OurWork = () => {
 };
 
 export default OurWork;
-
-// Note: Direction calculation was simplified to keep predictable slide behavior in multi-depth view
-const direction = 0; 
