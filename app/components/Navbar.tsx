@@ -83,135 +83,138 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile menu - Standalone Full Screen Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-0 z-[100] bg-white flex flex-col h-screen w-screen overflow-hidden"
-          >
-            {/* Mobile Menu Header */}
-            <div className="flex items-center justify-between px-4 sm:px-6 h-16">
-              {/* Logo */}
-              <div className="relative h-8 w-24">
-                <Image
-                  src="/assets/Zinhle Glamour Studio_Logo Design (Black01).png"
-                  alt="Zinhle Glamour Studio"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-
-              {/* Close Button */}
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-900 focus:outline-none"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* Mobile Menu Content */}
-            <div className="flex-1 flex flex-col px-8 pt-12 pb-12 overflow-y-auto">
-              <div className="space-y-6">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.name}
-                    initial={{ x: -10, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{
-                      delay: 0.1 + index * 0.1,
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <div className="border-b border-gray-100 pb-4">
-                      {link.hasChevron ? (
-                        <div className="flex flex-col">
-                          <button
-                            onClick={() => setIsServicesOpen(!isServicesOpen)}
-                            className="flex items-center justify-between w-full text-left group"
-                          >
-                            <span className="text-lg font-sora text-black">
-                              {link.name}
-                            </span>
-                            <ChevronDown
-                              size={20}
-                              className={clsx("text-black transition-transform duration-300", isServicesOpen && "rotate-180")}
-                              strokeWidth={2.5}
-                            />
-                          </button>
-
-                          <AnimatePresence>
-                            {isServicesOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden"
-                              >
-                                <div className="pl-4 pt-4 space-y-4">
-                                  {link.subItems?.map((sub) => (
-                                    <Link
-                                      key={sub.name}
-                                      href={sub.href}
-                                      className="block text-gray-500 font-sora text-base hover:text-raspberry transition-colors"
-                                      onClick={() => setIsOpen(false)}
-                                    >
-                                      {sub.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      ) : (
-                        <Link
-                          href={link.href}
-                          className="flex items-center justify-between group"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <span className="text-lg font-sora text-black">
-                            {link.name}
-                          </span>
-                        </Link>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div
-                className="mt-auto pb-10"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
-              >
-                <Link
-                  href="/services#book-service"
-                  className="flex items-center justify-center gap-2 w-full py-4 border border-raspberry text-raspberry bg-white font-sora font-medium text-sm tracking-wide transition-all duration-300 hover:bg-raspberry hover:text-white group"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Book An Appointment
-                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Bottom Line Animation */}
-            <motion.div
-              className="absolute bottom-0 left-0 h-1 bg-raspberry"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-            />
-          </motion.div>
+      <div
+        className={clsx(
+          "md:hidden fixed inset-0 z-[100] bg-white flex flex-col h-[100dvh] w-screen overflow-hidden transition-all duration-300 ease-in-out",
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         )}
-      </AnimatePresence>
+        aria-hidden={!isOpen}
+      >
+        {/* Mobile Menu Header */}
+        <div className="flex items-center justify-between px-4 sm:px-6 h-16">
+          {/* Logo */}
+          <div className="relative h-8 w-24">
+            <Image
+              src="/assets/Zinhle Glamour Studio_Logo Design (Black01).png"
+              alt="Zinhle Glamour Studio"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Close Button */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-gray-900 focus:outline-none p-2"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Mobile Menu Content */}
+        <div className="flex-1 flex flex-col px-8 pt-12 pb-12 overflow-y-auto">
+          <div className="space-y-6">
+            {navLinks.map((link, index) => (
+              <div
+                key={link.name}
+                className={clsx(
+                  "transition-all duration-500 ease-out",
+                  isOpen ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+                )}
+                style={{
+                  transitionDelay: isOpen ? `${0.1 + index * 0.1}s` : "0s",
+                }}
+              >
+                <div className="border-b border-gray-100 pb-4">
+                  {link.hasChevron ? (
+                    <div className="flex flex-col">
+                      <button
+                        onClick={() => setIsServicesOpen(!isServicesOpen)}
+                        className="flex items-center justify-between w-full text-left group py-2"
+                      >
+                        <span className="text-lg font-sora text-black">
+                          {link.name}
+                        </span>
+                        <ChevronDown
+                          size={20}
+                          className={clsx(
+                            "text-black transition-transform duration-300",
+                            isServicesOpen && "rotate-180"
+                          )}
+                          strokeWidth={2.5}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {isServicesOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-4 pt-4 space-y-4">
+                              {link.subItems?.map((sub) => (
+                                <Link
+                                  key={sub.name}
+                                  href={sub.href}
+                                  className="block text-gray-500 font-sora text-base hover:text-raspberry transition-colors"
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="flex items-center justify-between group py-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <span className="text-lg font-sora text-black">
+                        {link.name}
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={clsx(
+              "mt-auto pb-10 transition-all duration-500 ease-out",
+              isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            )}
+            style={{
+              transitionDelay: isOpen ? "0.4s" : "0s",
+            }}
+          >
+            <Link
+              href="/services#book-service"
+              className="flex items-center justify-center gap-2 w-full py-4 border border-raspberry text-raspberry bg-white font-sora font-medium text-sm tracking-wide transition-all duration-300 hover:bg-raspberry hover:text-white group"
+              onClick={() => setIsOpen(false)}
+            >
+              Book An Appointment
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white"
+              />
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom Line Animation */}
+        <div
+          className="absolute bottom-0 left-0 h-1 bg-raspberry transition-all duration-700 ease-out"
+          style={{ width: isOpen ? "100%" : "0%", transitionDelay: isOpen ? "0.2s" : "0s" }}
+        />
+      </div>
     </>
   );
 };
