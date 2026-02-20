@@ -46,7 +46,7 @@ const WhatsAppButton = () => {
         if (isOpen) setView("main");
     }, [isOpen]);
 
-    const phoneNumber = "27686648111"; // Replace with actual number if different
+    const phoneNumber = "27688688111"; // Replace with actual number if different
 
     // Flatten services for the list
     const allServices = servicesData.flatMap(category =>
