@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -28,7 +28,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm">
+      <nav className="fixed top-0 left-0 right-0 z-[105] bg-white/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-3 items-center h-16">
             {/* Left Column - Navigation Links */}
@@ -73,9 +73,27 @@ const Navbar = () => {
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden text-gray-700 hover:text-black focus:outline-none"
+                className="md:hidden relative w-10 h-10 flex justify-center items-center focus:outline-none group"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                <span
+                  className={clsx(
+                    "absolute h-[2px] w-6 bg-gray-900 rounded-full transition-all duration-300 ease-in-out",
+                    isOpen ? "rotate-45" : "-translate-y-2"
+                  )}
+                />
+                <span
+                  className={clsx(
+                    "absolute h-[2px] w-6 bg-gray-900 rounded-full transition-all duration-300 ease-in-out",
+                    isOpen ? "opacity-0" : "opacity-100"
+                  )}
+                />
+                <span
+                  className={clsx(
+                    "absolute h-[2px] w-6 bg-gray-900 rounded-full transition-all duration-300 ease-in-out",
+                    isOpen ? "-rotate-45" : "translate-y-2"
+                  )}
+                />
               </button>
             </div>
           </div>
@@ -85,33 +103,11 @@ const Navbar = () => {
       {/* Mobile menu - Standalone Full Screen Overlay */}
       <div
         className={clsx(
-          "md:hidden fixed inset-0 z-[100] bg-white flex flex-col h-[100dvh] w-screen overflow-hidden transition-all duration-300 ease-in-out",
+          "md:hidden fixed inset-0 z-[100] bg-white flex flex-col h-[100dvh] w-screen overflow-hidden transition-all duration-300 ease-in-out pt-16",
           isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         )}
         aria-hidden={!isOpen}
       >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between px-4 sm:px-6 h-16">
-          {/* Logo */}
-          <div className="relative h-8 w-24">
-            <Image
-              src="/assets/Zinhle Glamour Studio_Logo Design (Black01).png"
-              alt="Zinhle Glamour Studio"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* Close Button */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-gray-900 focus:outline-none p-2"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
         {/* Mobile Menu Content */}
         <div className="flex-1 flex flex-col px-8 pt-12 pb-12 overflow-y-auto">
           <div className="space-y-6">
