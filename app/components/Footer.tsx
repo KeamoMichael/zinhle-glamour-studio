@@ -92,7 +92,13 @@ const Footer = () => {
                 <h3 className="text-sm font-bold text-black font-sora">Tik Tok</h3>
               </div>
               <p className="text-xs font-sora">
-                <span className="text-raspberry font-bold">Hair by Zee</span>
+                <Link 
+                  href="https://www.tiktok.com/@zeehairline0" 
+                  target="_blank" 
+                  className="text-raspberry font-bold hover:underline transition-all"
+                >
+                  Hair by Zee
+                </Link>
                 <span className="text-gray-400 mx-2">|</span>
                 <span className="text-gray-900">@zeehairline0</span>
               </p>
