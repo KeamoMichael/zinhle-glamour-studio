@@ -2,6 +2,7 @@
 
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles, Heart, Award } from "lucide-react";
 
@@ -50,6 +51,12 @@ const AboutContent = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.9, ease: "easeOut" }}
                         >
+                            <Image
+                                src="/assets/zinhle_images_renamed/about-who-we-are-braiding-process-unsplash.jpg"
+                                alt="Zinhle Glamour Studio Braiding Process"
+                                fill
+                                className="object-cover object-center"
+                            />
                             {/* Decorative accent */}
                             <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry/60" />
                         </motion.div>
@@ -122,11 +129,11 @@ const AboutContent = () => {
                             >
                                 <div className="w-12 h-12 rounded-full bg-raspberry/10 flex items-center justify-center mb-6 group-hover:bg-raspberry transition-colors duration-300">
                                     <value.icon
-                                        className="w-5 h-5 text-raspberry group-hover:text-white transition-colors duration-300"
+                                        className="w-5 h-5 !text-raspberry group-hover:!text-white transition-colors duration-300"
                                         strokeWidth={1.5}
                                     />
                                 </div>
-                                <h3 className="text-xl font-bold font-sora text-black mb-3 group-hover:text-raspberry transition-colors duration-300">
+                                <h3 className="text-xl font-bold font-sora text-black mb-3 group-hover:!text-raspberry transition-colors duration-300">
                                     {value.title}
                                 </h3>
                                 <p className="text-gray-500 font-sora text-sm leading-relaxed">
@@ -194,6 +201,12 @@ const AboutContent = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.9, ease: "easeOut" }}
                         >
+                            <Image
+                                src="/assets/zinhle_images_renamed/about-family-care-mother-and-child-hair-care-pexels.jpg"
+                                alt="A Space Built For You - Zinhle Glamour Studio"
+                                fill
+                                className="object-cover object-center"
+                            />
                             <div className="absolute bottom-0 left-0 w-full h-1 bg-raspberry/60" />
                         </motion.div>
                     </div>

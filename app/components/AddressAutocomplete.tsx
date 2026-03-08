@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 interface AddressAutocompleteProps {
     value: string;
-    onChange: (value: string) => void;
+    onChange: (value: string, lat?: string, lon?: string) => void;
     label?: string;
     placeholder?: string;
     required?: boolean;
@@ -76,13 +76,13 @@ const AddressAutocomplete = ({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setQuery(newValue);
-        onChange(newValue);
+        onChange(newValue); // Now updating parent state as user types
         setShowPredictions(true);
     };
 
-    const handleSelectAddress = (address: string) => {
+    const handleSelectAddress = (address: string, lat?: string, lon?: string) => {
         setQuery(address);
-        onChange(address);
+        onChange(address, lat, lon);
         setShowPredictions(false);
         setResults([]);
     };
@@ -119,7 +119,7 @@ const AddressAutocomplete = ({
                             <button
                                 key={result.place_id}
                                 type="button"
-                                onClick={() => handleSelectAddress(result.display_name)}
+                                onClick={() => handleSelectAddress(result.display_name, result.lat, result.lon)}
                                 className="w-full px-4 py-3 text-left hover:bg-raspberry/5 hover:text-raspberry font-sora text-sm transition-colors border-b border-gray-50 last:border-0 flex items-start gap-2 group"
                             >
                                 <MapPin className="w-4 h-4 mt-0.5 text-gray-400 group-hover:text-raspberry flex-shrink-0" />

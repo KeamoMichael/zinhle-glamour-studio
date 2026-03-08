@@ -9,7 +9,7 @@ const AboutHero = () => {
             {/* Background Image */}
             <div className="absolute inset-0 w-full h-full">
                 <Image
-                    src="/assets/Zee - Hero Image For Web 2.jpg"
+                    src="/assets/zinhle_images_renamed/about-values-care-natural-beauty-portrait-pexels.jpg"
                     alt="About Zinhle Glamour Studio"
                     fill
                     className="object-cover object-center"

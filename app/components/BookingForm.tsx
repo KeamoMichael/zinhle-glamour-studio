@@ -1,8 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import AddressAutocomplete from "./AddressAutocomplete";
+import { Home, Store, MapPin, Phone, Mail, User, Info, Truck } from "lucide-react";
+
+// Salon Coordinates (Amen Shopping Centre, Durban CBD)
+const SALON_LOCATION = { lat: -29.8587, lon: 31.0218 };
 
 const BookingForm = () => {
     const [formData, setFormData] = useState({
@@ -11,9 +15,74 @@ const BookingForm = () => {
         email: "",
         phone: "",
         address: "",
+        lat: "",
+        lon: "",
+        bookingType: "salon", // 'salon' or 'housecall'
         serviceInterest: "Select a service",
         message: ""
     });
+
+    const [travelFee, setTravelFee] = useState<{ fee: number, distance: number } | null>(null);
+
+    // Haversine Formula for distance calculation
+    const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+        const R = 6371; // Earth's radius in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    };
+
+    const calculateTravelFee = (distance: number) => {
+        // Updated based on the professional rates discussed
+        if (distance <= 5) return 100; // Updated base to R100 as per info text
+        if (distance <= 15) return 180;
+        if (distance <= 30) return 280;
+        return 380;
+    };
+
+    // Auto-lookup coordinates if they are missing (e.g. user typed manually but didn't click suggestion)
+    useEffect(() => {
+        if (formData.bookingType === 'housecall' && formData.address && (!formData.lat || !formData.lon)) {
+            const timeoutId = setTimeout(async () => {
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(formData.address)}&limit=1&countrycodes=za`
+                    );
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        const { lat, lon } = data[0];
+                        handleAddressChange(formData.address, lat, lon);
+                    }
+                } catch (error) {
+                    console.error("Error auto-looking up address:", error);
+                }
+            }, 1000); // 1 second debounce
+            return () => clearTimeout(timeoutId);
+        }
+    }, [formData.address, formData.bookingType]);
+
+    const handleAddressChange = (address: string, lat?: string, lon?: string) => {
+        setFormData(prev => ({ ...prev, address, lat: lat || "", lon: lon || "" }));
+        
+        if (lat && lon) {
+            const distance = calculateDistance(
+                SALON_LOCATION.lat, 
+                SALON_LOCATION.lon, 
+                parseFloat(lat), 
+                parseFloat(lon)
+            );
+            const fee = calculateTravelFee(distance);
+            setTravelFee({ fee, distance: parseFloat(distance.toFixed(1)) });
+        } else {
+            // Only clear fee if the address itself is cleared
+            if (!address) setTravelFee(null);
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -22,9 +91,27 @@ const BookingForm = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here (e.g., send to API or WhatsApp)
-        console.log("Form submitted:", formData);
-        const message = `Hello, I would like to book an appointment.\nName: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nAddress: ${formData.address}\nService: ${formData.serviceInterest === "Other" ? formData.serviceInterest + " (" + customService + ")" : formData.serviceInterest}\nMessage: ${formData.message}`;
+        
+        if (formData.bookingType === 'housecall' && !formData.address) {
+            alert("Please provide an address for house call bookings.");
+            return;
+        }
+
+        const bookingTypeText = formData.bookingType === 'salon' ? "At the Salon" : "House Call";
+        const addressText = formData.bookingType === 'housecall' ? `\n*Address:* ${formData.address}` : "";
+        const travelFeeText = (formData.bookingType === 'housecall' && travelFee) 
+            ? `\n*Travel Fee:* R${travelFee.fee} (${travelFee.distance}km from salon)` 
+            : "";
+        
+        const message = `Hello, I would like to book an appointment.
+        
+*Booking Type:* ${bookingTypeText}${addressText}${travelFeeText}
+*Service:* ${formData.serviceInterest === "Other" ? formData.serviceInterest + " (" + customService + ")" : formData.serviceInterest}
+*Name:* ${formData.firstName} ${formData.lastName}
+*Phone:* ${formData.phone}
+*Email:* ${formData.email}
+*Message:* ${formData.message}`;
+
         window.open(`https://wa.me/27686648111?text=${encodeURIComponent(message)}`, '_blank');
     };
 
@@ -88,7 +175,59 @@ const BookingForm = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        {/* Service Location Selection */}
+                        <div className="space-y-4">
+                            <label className="block text-sm font-semibold text-gray-700 font-sora">
+                                Service Location *
+                            </label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, bookingType: 'salon' }))}
+                                    className={`flex items-center gap-4 p-5 border-2 transition-all duration-300 group ${
+                                        formData.bookingType === 'salon' 
+                                        ? 'border-raspberry bg-raspberry/5' 
+                                        : 'border-gray-100 hover:border-raspberry/30'
+                                    }`}
+                                >
+                                    <div className={`p-3 rounded-full transition-colors duration-300 ${
+                                        formData.bookingType === 'salon' ? 'bg-raspberry text-white' : 'bg-gray-100 text-gray-400 group-hover:text-raspberry'
+                                    }`}>
+                                        <Store className="w-5 h-5" />
+                                    </div>
+                                    <div className="text-left">
+                                        <p className={`font-sora font-semibold text-sm ${formData.bookingType === 'salon' ? 'text-raspberry' : 'text-gray-700'}`}>
+                                            At the Salon
+                                        </p>
+                                        <p className="font-sora text-xs text-gray-500">Visit us at Amen Shopping Centre</p>
+                                    </div>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, bookingType: 'housecall' }))}
+                                    className={`flex items-center gap-4 p-5 border-2 transition-all duration-300 group ${
+                                        formData.bookingType === 'housecall' 
+                                        ? 'border-raspberry bg-raspberry/5' 
+                                        : 'border-gray-100 hover:border-raspberry/30'
+                                    }`}
+                                >
+                                    <div className={`p-3 rounded-full transition-colors duration-300 ${
+                                        formData.bookingType === 'housecall' ? 'bg-raspberry text-white' : 'bg-gray-100 text-gray-400 group-hover:text-raspberry'
+                                    }`}>
+                                        <Home className="w-5 h-5" />
+                                    </div>
+                                    <div className="text-left">
+                                        <p className={`font-sora font-semibold text-sm ${formData.bookingType === 'housecall' ? 'text-raspberry' : 'text-gray-700'}`}>
+                                            House Call
+                                        </p>
+                                        <p className="font-sora text-xs text-gray-500">We come to your location</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 font-sora">
@@ -155,14 +294,51 @@ const BookingForm = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <AddressAutocomplete
-                                value={formData.address}
-                                onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
-                                label="Physical Address"
-                                placeholder="Start typing your street address..."
-                            />
-                        </div>
+                        <AnimatePresence>
+                            {formData.bookingType === 'housecall' && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="space-y-4 overflow-hidden"
+                                >
+                                    <AddressAutocomplete
+                                        value={formData.address}
+                                        onChange={handleAddressChange}
+                                        label="House Call Address *"
+                                        placeholder="Enter the full address for your house call..."
+                                    />
+                                    
+                                    {travelFee && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="p-4 bg-raspberry/5 border border-raspberry/20 rounded-sm flex items-start gap-3"
+                                        >
+                                            <div className="p-2 bg-raspberry/10 rounded-full text-raspberry">
+                                                <Truck className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold text-raspberry font-sora">
+                                                    Travel Fee Estimate: R{travelFee.fee}
+                                                </p>
+                                                <p className="text-xs text-gray-500 font-sora mt-0.5">
+                                                    Distance from Salon: {travelFee.distance} km. This fee will be added to your final service total.
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+
+                                    <div className="p-4 bg-gray-50 border border-gray-100 rounded-sm flex items-start gap-3">
+                                        <Info className="w-4 h-4 text-gray-400 mt-0.5" />
+                                        <p className="text-[11px] text-gray-500 font-sora leading-relaxed italic">
+                                            * House call fees are calculated based on your distance from our salon in Durban CBD. 
+                                            Base rate: R100. A minimum service value may be required for long-distance house calls.
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
                         <div className="space-y-2 relative">
                             <label className="block text-sm font-semibold text-gray-700 font-sora">
