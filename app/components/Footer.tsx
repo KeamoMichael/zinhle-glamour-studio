@@ -33,7 +33,7 @@ const Footer = () => {
             <div className="flex gap-3">
               {/* TikTok */}
               <Link
-                href="https://www.tiktok.com/@zinahleG"
+                href="https://www.tiktok.com/@zeehairline0"
                 target="_blank"
                 className="w-8 h-8 rounded-full bg-raspberry flex items-center justify-center text-white hover:bg-black transition-colors"
               >
