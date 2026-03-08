@@ -61,9 +61,14 @@ const Footer = () => {
                 <MapPin className="text-raspberry" size={18} />
                 <h3 className="text-sm font-bold text-black font-sora">Studio Address</h3>
               </div>
-              <p className="text-gray-900 font-sora text-xs leading-relaxed">
+              <Link 
+                href="https://www.google.com/maps/search/?api=1&query=Amen+Shopping+Centre+Durban+CBD+4001"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-900 font-sora text-xs leading-relaxed block hover:text-raspberry transition-colors"
+              >
                 Durban CBD, Amen Shopping Centre, 4001
-              </p>
+              </Link>
             </div>
 
             {/* Contact Details */}
