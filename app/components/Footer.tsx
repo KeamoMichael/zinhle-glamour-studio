@@ -78,7 +78,12 @@ const Footer = () => {
                 <h3 className="text-sm font-bold text-black font-sora">Contact Details</h3>
               </div>
               <div className="space-y-1">
-                <p className="text-gray-900 font-sora text-xs">zinhleglamourholding@gmail.com</p>
+                <Link 
+                  href="mailto:info@zinhleglamourstudios.co.za"
+                  className="text-gray-900 font-sora text-xs block hover:text-raspberry transition-colors"
+                >
+                  info@zinhleglamourstudios.co.za
+                </Link>
                 <p className="text-gray-900 font-sora text-xs">068 868 8111</p>
               </div>
             </div>
